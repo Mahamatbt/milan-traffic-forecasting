@@ -93,7 +93,7 @@ cannot produce them.
     code(
         """
 # Point this at your own fork/clone before running.
-REPO_URL = "https://github.com/YOUR_USERNAME/milan-traffic-forecasting.git"
+REPO_URL = "https://github.com/Mahamatbt/milan-traffic-forecasting.git"
 BRANCH = "main"
 
 # The test week is the reported result. "stress" (23 Dec - 1 Jan) is the

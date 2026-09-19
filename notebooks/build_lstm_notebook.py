@@ -92,7 +92,7 @@ Two files, from the committed version's output:
     code(
         """
 # Point this at your own fork/clone before running.
-REPO_URL = "https://github.com/YOUR_USERNAME/milan-traffic-forecasting.git"
+REPO_URL = "https://github.com/Mahamatbt/milan-traffic-forecasting.git"
 BRANCH = "main"
 
 # Only the LSTM is tuned here. The other two are selected locally and their
