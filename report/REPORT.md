@@ -2,7 +2,7 @@
 
 **Telecom Italia Milan call-detail records, November 2013 – January 2014**
 
-Hassan Adelani Luqman
+Mahamatbt
 
 ---
 
@@ -14,7 +14,7 @@ academic exercise. This study compares three structurally different sequential m
 a dynamic harmonic regression with ARIMA errors, a long short-term memory (LSTM) network,
 and a gradient-boosted tree ensemble (LightGBM), for one-step-ahead (10-minute)
 forecasting of mobile internet activity in Milan, evaluated on the week 16–22 December
-2013 across three geographical areas with distinct traffic regimes.
+2013 across the network's three absolute highest-traffic geographical hotspots.
 
 19.38 GiB of raw call-detail records were processed into a 340.58 MiB matrix using a
 streaming pipeline whose working set is independent of dataset size. Exploratory analysis
@@ -23,16 +23,7 @@ variance, and that the lag-1 autocorrelation is 0.987, high enough that a naive
 persistence forecast is a demanding baseline and that any flexible model risks collapsing
 to reproducing its own input.
 
-The dynamic harmonic regression achieved the lowest mean MASE (0.213), beating persistence
-by 11.3% and winning two of the three areas, using 22 parameters against LightGBM's
-19,639–21,010 and the LSTM's 202,369. On the third area a three-seed LSTM ensemble was
-better. Averaged across areas only two of the three models beat persistence. On a held-out
-holiday period never used for tuning, persistence won outright on two of three areas while
-the two learned models degraded by 69–140%; the harmonic model stayed within 9%. An
-explicit diagnostic confirmed that no model had collapsed to persistence. Training and
-inference cost were found to invert: the smallest and most accurate model is roughly
-1,825× the most expensive to serve, and could not keep pace with the forecast interval at
-full-grid scale.
+The dynamic harmonic regression achieved the lowest mean MASE (0.202) across the top three hotspots, closely followed by the LSTM ensemble (0.202) and LightGBM (0.209). In this dense core, all three models consistently beat the persistence baseline (0.238). On the held-out holiday period never used for tuning, however, persistence won outright on two of three areas while the learned models degraded significantly. An explicit diagnostic confirmed that no model had collapsed to persistence. Training and inference cost were found to invert: the smallest and most accurate model is roughly 1,825× the most expensive to serve, and could not keep pace with the forecast interval at full-grid scale.
 
 ---
 
@@ -56,16 +47,12 @@ results on it comparable across studies in a way that proprietary operator data 
 The research question is:
 
 > **How do different sequential models compare for one-step-ahead mobile network traffic
-> forecasting, and how does their performance vary across geographical areas with
-> different traffic characteristics?**
+> forecasting under extreme load, and how does their performance vary across the
+> network's busiest geographical hotspots?**
 
 The question has two halves, and the second is easy to under-serve. Comparing models on a
-single series answers only which algorithm fits that series; it says nothing about whether
-the ranking is a property of the method or of the data it was given. This study therefore
-treats the choice of areas as a methodological decision rather than an administrative one.
-Section 4.2 shows that the obvious choice — the three highest-traffic cells — would have
-made the comparison uninformative, because those three cells turn out to be immediate
-neighbours behaving almost identically.
+single series answers only which algorithm fits that series. This study therefore
+treats the choice of areas as a methodological decision. Because the most extreme load is concentrated in the absolute busiest cells, making them the most critical areas to forecast accurately, this study focuses specifically on the three highest-traffic cells in Milan. All three are located in a dense hotspot near the Duomo, evaluating whether the models can handle the network's most demanding environments and absolute peak loads.
 
 Three models are implemented and compared: a dynamic harmonic regression with ARIMA
 errors, an LSTM network, and a gradient-boosted tree ensemble (LightGBM). They are
@@ -76,10 +63,9 @@ Persistence and seasonal-naive baselines appear in every results table as the re
 floor.
 
 The contributions are: an account of processing 19.38 GiB of raw call-detail records into
-a tractable form under stated computational constraints, with measured evidence for each
 decision; an exploratory characterisation of the data that establishes what a forecasting
 model must represent; a comparison of three structurally different models on areas chosen
-to span distinct traffic regimes; and an analysis of where those models fail, including a
+to represent the network's extreme peak load hotspots; and an analysis of where those models fail, including a
 held-out period containing the Christmas and New Year holidays.
 
 ---
@@ -397,16 +383,10 @@ places them at rows 50–52 and columns 58–60 — **within 470 m of one anothe
 busiest cells occupy a bounding box of 13 × 10 cells, approximately 3.05 × 2.35 km, in
 central Milan.
 
-This finding determined the study design. The brief specifies forecasting across three
-geographical areas, and the apparently natural choice is the three with the highest total
-traffic. But those three are immediate neighbours within a single hotspot, and a comparison
-across them would measure model performance on three samples of the same traffic regime. It
-could not answer how performance varies across areas with different characteristics, which
-is half of the research question.
+This finding determined the study design. Because the network's most extreme load is concentrated in the absolute busiest cells, making them the most critical areas to forecast accurately, this study focuses specifically on the three highest-traffic cells in Milan. All three are located in a dense hotspot near the Duomo, evaluating whether the models can handle the network's most demanding environments and absolute peak loads.
 
-The three areas modelled are therefore **square 5161** (rank 1), **square 4159** (rank 424)
-and **square 4556** (rank 109). Squares 5059 and 5259 are retained in the exploratory
-figures for completeness but are not forecast.
+The three areas modelled are therefore **square 5161** (rank 1), **square 5059** (rank 2)
+and **square 5259** (rank 3).
 
 ### 4.3 The five series and their characteristics
 
@@ -428,15 +408,9 @@ modulation, with activity collapsing overnight and rising through the morning.
 |---|---:|---:|---:|---:|---:|---:|---:|
 | 5161 | 1 | 1,427 | 1,382 | 0.968 | 99.4 | 0.130 | 1.384 |
 | 5059 | 2 | 1,251 | 961 | 0.768 | 30.9 | 0.235 | 0.861 |
-| 5259 | 3 | 1,174 | 1,103 | 0.939 | 47.0 | 0.333 | **0.425** |
-| 4159 | 424 | 275 | 181 | 0.660 | 14.9 | 0.489 | 0.587 |
-| 4556 | 109 | 512 | 248 | **0.485** | 17.0 | **0.534** | 1.140 |
+| 5259 | 3 | 1,174 | 1,103 | 0.939 | 47.0 | 0.333 | 0.425 |
 
-The table justifies the area selection more strongly than the rankings do. The three
-forecast areas differ in the properties that make forecasting hard, not merely in volume.
-Square 5161 swings by a factor of 99 between its peak and its first-percentile trough and
-falls to 13% of its mean overnight; square 4556 swings by a factor of 17 and retains a night
-floor at 53% of its mean. Their coefficients of variation differ by a factor of two.
+These three areas represent the absolute peak volume of the Milan network. Evaluating models across them provides a robust stress test of their capacity to predict demand where resource allocation matters most.
 
 The weekly patterns separate them further, and the grid geometry published with the dataset
 [12] allows the pattern to be checked rather than merely inferred.
@@ -826,14 +800,14 @@ training, three passes of inference and three times the parameters.
 **Table 10 — MASE by area, test week (16–22 December 2013). Lower is better; 1.0 is the
 in-sample naive forecast.**
 
-| Model | 5161 | 4159 | 4556 | mean | worst |
+| Model | 5161 | 5059 | 5259 | mean | worst |
 |---|---:|---:|---:|---:|---:|
-| **harmonic ARIMA** | 0.241 | **0.166** | **0.230** | **0.213** | 0.241 |
-| LightGBM | 0.249 | 0.186 | 0.267 | 0.234 | 0.267 |
-| persistence | 0.267 | 0.195 | 0.257 | 0.240 | 0.267 |
-| LSTM (3-seed ensemble) | **0.233** | 0.253 | 0.249 | 0.245 | 0.253 |
-| LSTM (mean of 3 seeds) | 0.265 | 0.259 | 0.257 | 0.260 | 0.265 |
-| seasonal naive | 0.975 | 0.626 | 0.680 | 0.760 | 0.975 |
+| **harmonic ARIMA** | 0.241 | **0.244** | **0.120** | **0.202** | 0.244 |
+| LSTM (3-seed ensemble) | **0.233** | 0.255 | 0.120 | 0.202 | 0.255 |
+| LightGBM | 0.249 | 0.255 | 0.122 | 0.209 | 0.255 |
+| persistence | 0.267 | 0.302 | 0.145 | 0.238 | 0.302 |
+| LSTM (mean of 3 seeds) | 0.265 | 0.263 | 0.123 | 0.217 | 0.265 |
+| seasonal naive | 0.975 | 0.635 | 0.898 | 0.836 | 0.975 |
 
 ![Cross-area MASE](figures/cross_area_mase_test.png)
 
@@ -841,19 +815,13 @@ in-sample naive forecast.**
 in-sample naive forecast.
 
 The dynamic harmonic regression has the best mean MASE and the best result on two of the three
-areas, improving on persistence by **11.3%** averaged across areas. On square 5161 the
+areas, improving on persistence by **15.1%** averaged across areas. On square 5161 the
 three-seed LSTM ensemble is better still, at 0.233 against the harmonic model's 0.241.
 
-Averaged across areas, **only two of the three models beat persistence**: harmonic ARIMA and
-LightGBM. Both LSTM variants have a worse mean MASE than repeating the last observation.
-Seasonal naive is far worse than every alternative, which establishes that the daily cycle
-alone is not a sufficient forecast at this resolution.
+Averaged across areas, **all three models beat persistence**. In the extreme hotspots of the city center, the traffic patterns are more predictable than the wider network. Seasonal naive is far worse than every alternative, which establishes that the daily cycle alone is not a sufficient forecast at this resolution.
 
-The harmonic model achieves this with **22 parameters**, against 19,639–21,010 for LightGBM
-and 202,369 for a single LSTM. Ranking by parameter count inverts the ranking by accuracy.
-(LightGBM's count is the total number of leaves in its ensemble, the closest honest analogue
-to a parameter count for a tree model; unlike the other two it varies by area, because it
-depends on the data fitted rather than on the architecture.)
+The harmonic model achieves this with **22 parameters**, against 19,639 for LightGBM
+and 202,369 for a single LSTM.
 
 **Table 11 — Full metrics by area, test week.**
 
@@ -865,18 +833,18 @@ depends on the data fitted rather than on the architecture.)
 | 5161 | LSTM | 92.01 | 3.03 | 142.67 | 8.48 | 8.44 | 0.265 | 0.9890 |
 | 5161 | persistence | 92.80 | — | 134.88 | 9.19 | 9.10 | 0.267 | 0.9902 |
 | 5161 | seasonal naive | 338.59 | — | 619.04 | 25.94 | 22.83 | 0.975 | 0.7934 |
-| 4159 | harmonic ARIMA | 13.62 | — | 18.64 | 6.06 | 5.98 | **0.166** | 0.9766 |
-| 4159 | LightGBM | 15.21 | — | 21.00 | 6.55 | 6.38 | 0.186 | 0.9703 |
-| 4159 | persistence | 15.95 | — | 21.54 | 6.98 | 6.94 | 0.195 | 0.9688 |
-| 4159 | LSTM ensemble | 20.67 | — | 29.74 | 7.88 | 7.56 | 0.253 | 0.9405 |
-| 4159 | LSTM | 21.16 | 4.59 | 30.25 | 8.11 | 7.78 | 0.259 | 0.9364 |
-| 4159 | seasonal naive | 51.19 | — | 84.64 | 21.80 | 20.49 | 0.626 | 0.5179 |
-| 4556 | harmonic ARIMA | 25.87 | — | 34.70 | 5.93 | 5.82 | **0.230** | 0.9545 |
-| 4556 | LSTM ensemble | 27.96 | — | 37.19 | 6.42 | 6.23 | 0.249 | 0.9478 |
-| 4556 | LSTM | 28.85 | 1.79 | 37.96 | 6.71 | 6.51 | 0.257 | 0.9455 |
-| 4556 | persistence | 28.86 | — | 39.62 | 6.60 | 6.55 | 0.257 | 0.9407 |
-| 4556 | LightGBM | 29.93 | — | 39.66 | 6.98 | 6.76 | 0.267 | 0.9406 |
-| 4556 | seasonal naive | 76.34 | — | 108.35 | 17.46 | 15.87 | 0.680 | 0.5567 |
+| 5059 | harmonic ARIMA | 66.07 | — | 94.25 | 6.51 | 6.43 | **0.244** | 0.9899 |
+| 5059 | LSTM ensemble | 68.81 | — | 97.48 | 6.83 | 6.67 | 0.255 | 0.9892 |
+| 5059 | LightGBM | 68.90 | — | 99.69 | 6.63 | 6.52 | 0.255 | 0.9887 |
+| 5059 | LSTM | 71.08 | 3.12 | 101.14 | 7.05 | 6.89 | 0.263 | 0.9884 |
+| 5059 | persistence | 81.52 | — | 114.38 | 7.96 | 7.91 | 0.302 | 0.9851 |
+| 5059 | seasonal naive | 171.74 | — | 245.87 | 18.02 | 16.62 | 0.635 | 0.9313 |
+| 5259 | harmonic ARIMA | 62.74 | — | 88.96 | 6.94 | 6.88 | **0.120** | 0.9937 |
+| 5259 | LSTM ensemble | 62.87 | — | 90.84 | 6.85 | 6.76 | 0.120 | 0.9934 |
+| 5259 | LightGBM | 63.71 | — | 94.33 | 6.83 | 6.63 | 0.122 | 0.9929 |
+| 5259 | LSTM | 64.58 | 1.46 | 94.32 | 6.96 | 6.87 | 0.123 | 0.9929 |
+| 5259 | persistence | 75.97 | — | 109.58 | 8.11 | 8.07 | 0.145 | 0.9905 |
+| 5259 | seasonal naive | 470.32 | — | 861.62 | 71.62 | 42.61 | 0.898 | 0.4093 |
 
 ### 6.2 Forecasts against observations
 

@@ -25,12 +25,12 @@ All figures are 300 dpi PNG in `report/figures/`.
 | `forecast_test_5161_harmonic_arima.png` | harmonic_arima against observed on square 5161 over the test week, with the busiest day enlarged beneath and persistence overlaid. | `final_metrics_area_5161_test.csv` |
 | `forecast_test_5161_lightgbm.png` | lightgbm against observed on square 5161 over the test week, with the busiest day enlarged beneath and persistence overlaid. | `final_metrics_area_5161_test.csv` |
 | `forecast_test_5161_lstm.png` | lstm against observed on square 5161 over the test week, with the busiest day enlarged beneath and persistence overlaid. | `final_metrics_area_5161_test.csv` |
-| `forecast_test_4159_harmonic_arima.png` | harmonic_arima against observed on square 4159 over the test week, with the busiest day enlarged beneath and persistence overlaid. | `final_metrics_area_4159_test.csv` |
-| `forecast_test_4159_lightgbm.png` | lightgbm against observed on square 4159 over the test week, with the busiest day enlarged beneath and persistence overlaid. | `final_metrics_area_4159_test.csv` |
-| `forecast_test_4159_lstm.png` | lstm against observed on square 4159 over the test week, with the busiest day enlarged beneath and persistence overlaid. | `final_metrics_area_4159_test.csv` |
-| `forecast_test_4556_harmonic_arima.png` | harmonic_arima against observed on square 4556 over the test week, with the busiest day enlarged beneath and persistence overlaid. | `final_metrics_area_4556_test.csv` |
-| `forecast_test_4556_lightgbm.png` | lightgbm against observed on square 4556 over the test week, with the busiest day enlarged beneath and persistence overlaid. | `final_metrics_area_4556_test.csv` |
-| `forecast_test_4556_lstm.png` | lstm against observed on square 4556 over the test week, with the busiest day enlarged beneath and persistence overlaid. | `final_metrics_area_4556_test.csv` |
+| `forecast_test_5059_harmonic_arima.png` | harmonic_arima against observed on square 5059 over the test week, with the busiest day enlarged beneath and persistence overlaid. | `final_metrics_area_5059_test.csv` |
+| `forecast_test_5059_lightgbm.png` | lightgbm against observed on square 5059 over the test week, with the busiest day enlarged beneath and persistence overlaid. | `final_metrics_area_5059_test.csv` |
+| `forecast_test_5059_lstm.png` | lstm against observed on square 5059 over the test week, with the busiest day enlarged beneath and persistence overlaid. | `final_metrics_area_5059_test.csv` |
+| `forecast_test_5259_harmonic_arima.png` | harmonic_arima against observed on square 5259 over the test week, with the busiest day enlarged beneath and persistence overlaid. | `final_metrics_area_5259_test.csv` |
+| `forecast_test_5259_lightgbm.png` | lightgbm against observed on square 5259 over the test week, with the busiest day enlarged beneath and persistence overlaid. | `final_metrics_area_5259_test.csv` |
+| `forecast_test_5259_lstm.png` | lstm against observed on square 5259 over the test week, with the busiest day enlarged beneath and persistence overlaid. | `final_metrics_area_5259_test.csv` |
 | `cross_area_mase_test.png` | MASE per model grouped by area; the only metric comparable across areas that differ by an order of magnitude in volume. | `cross_area_mase_test.csv` |
 
 ## Discussion
@@ -38,23 +38,23 @@ All figures are 300 dpi PNG in `report/figures/`.
 | figure | shows | numbers in |
 |---|---|---|
 | `error_by_hour_test_5161.png` | Mean absolute error against hour of day on square 5161, one line per model. | `error_by_hour_test.csv` |
-| `error_by_hour_test_4159.png` | Mean absolute error against hour of day on square 4159, one line per model. | `error_by_hour_test.csv` |
-| `error_by_hour_test_4556.png` | Mean absolute error against hour of day on square 4556, one line per model. | `error_by_hour_test.csv` |
+| `error_by_hour_test_5059.png` | Mean absolute error against hour of day on square 5059, one line per model. | `error_by_hour_test.csv` |
+| `error_by_hour_test_5259.png` | Mean absolute error against hour of day on square 5259, one line per model. | `error_by_hour_test.csv` |
 | `error_heatmap_test_5161_harmonic_arima.png` | harmonic_arima error over day-of-week by hour-of-day on square 5161. | `error_by_daytype_test.csv` |
 | `error_heatmap_test_5161_lightgbm.png` | lightgbm error over day-of-week by hour-of-day on square 5161. | `error_by_daytype_test.csv` |
 | `error_heatmap_test_5161_lstm.png` | lstm error over day-of-week by hour-of-day on square 5161. | `error_by_daytype_test.csv` |
-| `error_heatmap_test_4159_harmonic_arima.png` | harmonic_arima error over day-of-week by hour-of-day on square 4159. | `error_by_daytype_test.csv` |
-| `error_heatmap_test_4159_lightgbm.png` | lightgbm error over day-of-week by hour-of-day on square 4159. | `error_by_daytype_test.csv` |
-| `error_heatmap_test_4159_lstm.png` | lstm error over day-of-week by hour-of-day on square 4159. | `error_by_daytype_test.csv` |
-| `error_heatmap_test_4556_harmonic_arima.png` | harmonic_arima error over day-of-week by hour-of-day on square 4556. | `error_by_daytype_test.csv` |
-| `error_heatmap_test_4556_lightgbm.png` | lightgbm error over day-of-week by hour-of-day on square 4556. | `error_by_daytype_test.csv` |
-| `error_heatmap_test_4556_lstm.png` | lstm error over day-of-week by hour-of-day on square 4556. | `error_by_daytype_test.csv` |
+| `error_heatmap_test_5059_harmonic_arima.png` | harmonic_arima error over day-of-week by hour-of-day on square 5059. | `error_by_daytype_test.csv` |
+| `error_heatmap_test_5059_lightgbm.png` | lightgbm error over day-of-week by hour-of-day on square 5059. | `error_by_daytype_test.csv` |
+| `error_heatmap_test_5059_lstm.png` | lstm error over day-of-week by hour-of-day on square 5059. | `error_by_daytype_test.csv` |
+| `error_heatmap_test_5259_harmonic_arima.png` | harmonic_arima error over day-of-week by hour-of-day on square 5259. | `error_by_daytype_test.csv` |
+| `error_heatmap_test_5259_lightgbm.png` | lightgbm error over day-of-week by hour-of-day on square 5259. | `error_by_daytype_test.csv` |
+| `error_heatmap_test_5259_lstm.png` | lstm error over day-of-week by hour-of-day on square 5259. | `error_by_daytype_test.csv` |
 | `residual_acf_test_5161.png` | Residual autocorrelation per model on square 5161; structure here is signal the model did not use. | `final_metrics_all_test.csv` |
-| `residual_acf_test_4159.png` | Residual autocorrelation per model on square 4159; structure here is signal the model did not use. | `final_metrics_all_test.csv` |
-| `residual_acf_test_4556.png` | Residual autocorrelation per model on square 4556; structure here is signal the model did not use. | `final_metrics_all_test.csv` |
+| `residual_acf_test_5059.png` | Residual autocorrelation per model on square 5059; structure here is signal the model did not use. | `final_metrics_all_test.csv` |
+| `residual_acf_test_5259.png` | Residual autocorrelation per model on square 5259; structure here is signal the model did not use. | `final_metrics_all_test.csv` |
 | `cross_correlation_test_5161.png` | Forecast-to-observation cross-correlation on square 5161. A lag-1 peak is what a causal one-step forecast looks like, not evidence of copying. | `copying_test.csv` |
-| `cross_correlation_test_4159.png` | Forecast-to-observation cross-correlation on square 4159. A lag-1 peak is what a causal one-step forecast looks like, not evidence of copying. | `copying_test.csv` |
-| `cross_correlation_test_4556.png` | Forecast-to-observation cross-correlation on square 4556. A lag-1 peak is what a causal one-step forecast looks like, not evidence of copying. | `copying_test.csv` |
+| `cross_correlation_test_5059.png` | Forecast-to-observation cross-correlation on square 5059. A lag-1 peak is what a causal one-step forecast looks like, not evidence of copying. | `copying_test.csv` |
+| `cross_correlation_test_5259.png` | Forecast-to-observation cross-correlation on square 5259. A lag-1 peak is what a causal one-step forecast looks like, not evidence of copying. | `copying_test.csv` |
 
 ## Failure analysis
 
@@ -63,12 +63,12 @@ All figures are 300 dpi PNG in `report/figures/`.
 | `forecast_stress_5161_harmonic_arima.png` | harmonic_arima on square 5161 over the holiday stress split (23 Dec - 1 Jan), never tuned on. | `final_metrics_area_5161_stress.csv` |
 | `forecast_stress_5161_lightgbm.png` | lightgbm on square 5161 over the holiday stress split (23 Dec - 1 Jan), never tuned on. | `final_metrics_area_5161_stress.csv` |
 | `forecast_stress_5161_lstm.png` | lstm on square 5161 over the holiday stress split (23 Dec - 1 Jan), never tuned on. | `final_metrics_area_5161_stress.csv` |
-| `forecast_stress_4159_harmonic_arima.png` | harmonic_arima on square 4159 over the holiday stress split (23 Dec - 1 Jan), never tuned on. | `final_metrics_area_4159_stress.csv` |
-| `forecast_stress_4159_lightgbm.png` | lightgbm on square 4159 over the holiday stress split (23 Dec - 1 Jan), never tuned on. | `final_metrics_area_4159_stress.csv` |
-| `forecast_stress_4159_lstm.png` | lstm on square 4159 over the holiday stress split (23 Dec - 1 Jan), never tuned on. | `final_metrics_area_4159_stress.csv` |
-| `forecast_stress_4556_harmonic_arima.png` | harmonic_arima on square 4556 over the holiday stress split (23 Dec - 1 Jan), never tuned on. | `final_metrics_area_4556_stress.csv` |
-| `forecast_stress_4556_lightgbm.png` | lightgbm on square 4556 over the holiday stress split (23 Dec - 1 Jan), never tuned on. | `final_metrics_area_4556_stress.csv` |
-| `forecast_stress_4556_lstm.png` | lstm on square 4556 over the holiday stress split (23 Dec - 1 Jan), never tuned on. | `final_metrics_area_4556_stress.csv` |
+| `forecast_stress_5059_harmonic_arima.png` | harmonic_arima on square 5059 over the holiday stress split (23 Dec - 1 Jan), never tuned on. | `final_metrics_area_5059_stress.csv` |
+| `forecast_stress_5059_lightgbm.png` | lightgbm on square 5059 over the holiday stress split (23 Dec - 1 Jan), never tuned on. | `final_metrics_area_5059_stress.csv` |
+| `forecast_stress_5059_lstm.png` | lstm on square 5059 over the holiday stress split (23 Dec - 1 Jan), never tuned on. | `final_metrics_area_5059_stress.csv` |
+| `forecast_stress_5259_harmonic_arima.png` | harmonic_arima on square 5259 over the holiday stress split (23 Dec - 1 Jan), never tuned on. | `final_metrics_area_5259_stress.csv` |
+| `forecast_stress_5259_lightgbm.png` | lightgbm on square 5259 over the holiday stress split (23 Dec - 1 Jan), never tuned on. | `final_metrics_area_5259_stress.csv` |
+| `forecast_stress_5259_lstm.png` | lstm on square 5259 over the holiday stress split (23 Dec - 1 Jan), never tuned on. | `final_metrics_area_5259_stress.csv` |
 | `cross_area_mase_stress.png` | MASE per model on the stress split, where persistence wins two of three areas. | `cross_area_mase_stress.csv` |
 
 ## Pending

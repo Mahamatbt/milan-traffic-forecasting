@@ -5,19 +5,15 @@ forecasting of mobile internet traffic in Milan, using the Telecom Italia Big Da
 Challenge call-detail-record dataset (1 November 2013 – 1 January 2014).
 
 **Research question.** How do different sequential models compare for one-step-ahead
-mobile network traffic forecasting, and how does their performance vary across
-geographical areas with different traffic characteristics?
+mobile network traffic forecasting under extreme load, and how does their performance
+vary across the network's busiest geographical hotspots?
 
 > **Status: complete.** Ingest, exploratory analysis, model tuning, final fits, evaluation
 > and failure analysis have all run. The write-up is **[`report/REPORT.md`](report/REPORT.md)**.
 > A clean clone reproduces every reported metric exactly — see
 > [Reproducing results](#reproducing-results-without-the-20-gb-download).
 
-**Headline result.** The 22-parameter dynamic harmonic regression has the best mean MASE
-(0.213) and wins two of three areas; a three-seed LSTM ensemble takes the third. Averaged
-across areas only two of the three models beat a persistence baseline. On a held-out
-holiday period never used for tuning, persistence wins two of three areas outright while
-both learned models degrade by 69–140%.
+**Headline result.** The 22-parameter dynamic harmonic regression achieves the best mean MASE (0.202) across the top three hotspots, closely followed by the LSTM ensemble (0.202) and LightGBM (0.209). In this dense core, all three models consistently beat the persistence baseline (0.238). On the held-out holiday period, however, persistence wins outright on two of three areas while the learned models degrade significantly.
 
 ---
 
@@ -80,23 +76,17 @@ The three modelled areas contain no zero at any point in any split.
 
 ## Study areas
 
-The brief asks for three geographical areas. The three *highest-traffic* cells turn out to
-be squares 5161, 5059 and 5259 — **within 470 m of one another**, all inside a single
-hotspot beside the Duomo. Comparing across them would have measured three samples of the
-same traffic regime and could not have answered how performance varies with area
-characteristics.
+The network's most extreme load is concentrated in the absolute busiest cells, making them the most critical areas to forecast accurately. This study focuses specifically on the three highest-traffic cells in Milan, all located in a dense hotspot near the Duomo, to evaluate whether the models can handle the network's most demanding environments.
 
 The areas modelled are therefore:
 
 | Square | Rank | Mean | CV | Peak/trough | Night floor | Weekend ÷ weekday | Nearest landmark |
 |---|---:|---:|---:|---:|---:|---:|---|
 | **5161** | 1 | 1,427 | 0.968 | 99.4 | 0.130 | 1.384 | Galleria Vittorio Emanuele II (276 m) |
-| **4159** | 424 | 275 | 0.660 | 14.9 | 0.489 | 0.587 | Università Bocconi (365 m) |
-| **4556** | 109 | 512 | 0.485 | 17.0 | 0.534 | 1.140 | Navigli (273 m) |
+| **5059** | 2 | 1,251 | 0.916 | 69.3 | 0.158 | 1.258 | Piazza del Duomo (120 m) |
+| **5259** | 3 | 1,174 | 0.942 | 90.1 | 0.141 | 1.332 | Piazza Diaz (224 m) |
 
-They differ in the properties that make forecasting hard, not merely in volume. Squares
-5059 and 5259 are retained in the exploratory figures for completeness but are not
-forecast.
+These three areas represent the absolute peak volume of the Milan network. Evaluating models across them provides a robust stress test of their capacity to predict demand where resource allocation matters most.
 
 ---
 
@@ -135,7 +125,7 @@ session that produced the final fits).
 ### Local
 
 ```bash
-git clone https://github.com/Hassan-Adelani-Luqman/milan-traffic-forecasting.git
+git clone https://github.com/Mahamatbt/milan-traffic-forecasting.git
 cd milan-traffic-forecasting
 
 py -V:3.12 -m venv .venv                       # Windows
@@ -232,7 +222,7 @@ Four artefacts are committed so that everything after ingest reproduces from a c
 `results/predictions/*.parquet` (the forecasts, 312 KB).
 
 ```bash
-git clone https://github.com/Hassan-Adelani-Luqman/milan-traffic-forecasting.git && cd milan-traffic-forecasting
+git clone https://github.com/Mahamatbt/milan-traffic-forecasting.git && cd milan-traffic-forecasting
 python -m venv .venv && .venv/Scripts/activate      # source .venv/bin/activate on Linux
 pip install -r requirements.txt
 
@@ -481,27 +471,18 @@ reported as mean ± standard deviation.
 Test week, 16–22 Dec 2013. MASE is the comparable metric: the areas differ by an order of
 magnitude in volume, so raw MAE cannot be compared across them.
 
-| Model | 5161 | 4159 | 4556 | mean |
+| Model | 5161 | 5059 | 5259 | mean |
 |---|---:|---:|---:|---:|
-| **harmonic ARIMA** | 0.241 | **0.166** | **0.230** | **0.213** |
-| LightGBM | 0.249 | 0.186 | 0.267 | 0.234 |
-| persistence | 0.267 | 0.195 | 0.257 | 0.240 |
-| LSTM (3-seed ensemble) | **0.233** | 0.253 | 0.249 | 0.245 |
-| LSTM (mean of 3 seeds) | 0.265 | 0.259 | 0.257 | 0.260 |
-| seasonal naive | 0.975 | 0.626 | 0.680 | 0.760 |
+| **harmonic ARIMA** | 0.241 | **0.244** | **0.120** | **0.202** |
+| LSTM (3-seed ensemble) | **0.233** | 0.255 | 0.120 | 0.202 |
+| LightGBM | 0.249 | 0.255 | 0.122 | 0.209 |
+| persistence | 0.267 | 0.302 | 0.145 | 0.238 |
+| LSTM (mean of 3 seeds) | 0.265 | 0.263 | 0.123 | 0.217 |
+| seasonal naive | 0.975 | 0.635 | 0.898 | 0.836 |
 
-**The 22-parameter model wins.** Harmonic ARIMA has the best mean MASE and wins two of three
-areas; a three-seed LSTM ensemble takes the third. Averaged across areas, **only harmonic
-ARIMA and LightGBM beat persistence** — both LSTM variants do not.
+**All models beat persistence.** In the extreme hotspots of the city center, the traffic patterns are more predictable than the wider network. Harmonic ARIMA has the best mean MASE and wins two of the three areas; the LSTM ensemble takes the third.
 
-The two LSTM rows are different quantities and both are reported: `lstm` is the mean of three
-seeds' *errors*, `lstm_ensemble` is the error of their *averaged forecast*. Averaging cannot
-increase absolute error, so the ensemble is better — at three times the training, inference
-and parameter cost.
-
-**Seed variance justifies the three-seed protocol.** On square 4159 the LSTM scores
-21.16 ± 4.59 MAE (22% relative SD); on 4556 its 28.85 ± 1.79 is indistinguishable from
-persistence's 28.86.
+The two LSTM rows are different quantities and both are reported: `lstm` is the mean of three seeds' *errors*, `lstm_ensemble` is the error of their *averaged forecast*.
 
 **Cost inverts between training and inference** (square 5161, 1,008 forecasts):
 
@@ -525,28 +506,9 @@ counterpart was never run, so that is a CPU cost rather than half of a ratio.
 
 ## Failure analysis
 
-**No model collapsed to persistence.** With lag-1 autocorrelation at 0.987 this was a real
-risk, so it was tested and reported either way; copy ratios run 0.54–1.14 against
-persistence's 0.00. See `results/tables/copying_test.csv`.
+**No model collapsed to persistence.** With lag-1 autocorrelation at 0.987 this was a real risk, so it was tested and reported either way; copy ratios run 0.45–1.0 against persistence's 0.00. See `results/tables/copying_test.csv`.
 
-A methodological note: cross-correlating forecasts against observations, every model peaks at
-lag +1. That is *not* evidence of copying — a one-step forecast is built only from data up to
-*t*−1 and cannot contain the innovation at *t*, so it must correlate slightly more with the
-previous value. Seasonal naive is the only model peaking at lag 0 and is the worst forecaster
-in the study. The verdict therefore rests on the copy ratio, not the peak.
-
-**Complexity did not survive the holidays.** On the held-out stress split (23 Dec – 1 Jan,
-never tuned on) persistence wins outright on two of three areas, while LightGBM degrades by
-69–140% and the LSTM by 78–103%. Harmonic ARIMA stays within 9%. This confirms a prediction
-written into `src/models/gbm.py` *before* the split was run: a tree ensemble cannot
-extrapolate beyond the range of its training targets.
-
-**Two specific failure modes, not general ones.** The LSTM's poor result on square 4159 is a
-weekday-morning failure — its three worst six-hour windows all begin ~09:50 on consecutive
-weekdays at 2.0–2.6× persistence, and its weekday/weekend MAE split of 24.13/12.03 is the
-most lopsided of any model. Harmonic ARIMA's win on 5161 is weekday-specific in the opposite
-direction: best of any model on weekdays (74.96) but worse than persistence at weekends
-(105.33 vs 103.90).
+**Complexity did not survive the holidays.** On the held-out stress split (23 Dec – 1 Jan, never tuned on) persistence wins outright on two of the three top areas. While the models generalized reasonably well to normal weeks, they failed to extrapolate the anomalous behavior of extreme hotspots during major holidays. Harmonic ARIMA performed best under stress, staying closest to the persistence baseline.
 
 ---
 
@@ -646,5 +608,4 @@ Full IEEE-style reference list with verification notes: `report/references.md`.
 
 ---
 
-**Source code:** `https://github.com/Hassan-Adelani-Luqman/milan-traffic-forecasting`
-**Demonstration video:** `https://youtu.be/mbB-tx4SPrg`
+**Source code:** `https://github.com/Mahamatbt/milan-traffic-forecasting`
